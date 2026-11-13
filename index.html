@@ -269,8 +269,67 @@
     }
 
     /* ==========================================================================
-       5. NUMBERED SERVICES ACCORDION & VIEW TRANSITIONS
+       5. 3D SERVICE GALLERY & VIEW TRANSITIONS
        ========================================================================== */
+    .service-gallery {
+      display: flex;
+      gap: 1.25rem;
+      overflow-x: auto;
+      padding: 1.25rem 0.25rem 2rem;
+      perspective: 1400px;
+      scroll-behavior: smooth;
+      scroll-padding-inline: 1rem;
+      scroll-snap-type: x mandatory;
+      scrollbar-color: rgba(245, 158, 27, 0.55) rgba(247, 245, 240, 0.08);
+      scrollbar-width: thin;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .service-card {
+      flex: 0 0 min(82vw, 340px);
+      scroll-snap-align: center;
+      transform: perspective(1400px) rotateY(var(--service-rotation, 0deg)) translateZ(var(--service-depth, 0px)) scale(var(--service-scale, 1));
+      transform-style: preserve-3d;
+      transition: transform 0.22s ease-out, border-color 0.3s ease, box-shadow 0.3s ease;
+      will-change: transform;
+    }
+
+    .service-card:hover {
+      border-color: var(--border-gold);
+      box-shadow: 0 24px 48px -20px rgba(0, 0, 0, 0.9), 0 0 28px -12px rgba(245, 158, 27, 0.32);
+    }
+
+    .service-card-image {
+      transform: translateZ(18px);
+    }
+
+    @media (min-width: 768px) {
+      .service-gallery {
+        gap: 1.5rem;
+      }
+
+      .service-card {
+        flex-basis: min(42vw, 360px);
+      }
+    }
+
+    @media (min-width: 1200px) {
+      .service-card {
+        flex-basis: min(30vw, 360px);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .service-gallery {
+        scroll-behavior: auto;
+      }
+
+      .service-card {
+        transform: none !important;
+        transition: none;
+      }
+    }
+
     .service-row {
       border-bottom: 1px solid var(--border-subtle);
       transition: background-color 0.35s ease, border-color 0.35s ease;
@@ -786,9 +845,102 @@
               Numbered <span class="font-bold text-gold">Services</span>
             </h2>
           </div>
-          <p class="text-sm sm:text-base text-champagne/80 max-w-md leading-relaxed">
-            Select any discipline below to inspect deliverables and reserve your preferred date directly with our Windhoek creative team.
-          </p>
+          <div class="flex flex-col gap-4 text-sm sm:text-base text-champagne/80 max-w-md leading-relaxed">
+            <p>Explore our photography and design services, then open a service below to see the details and book.</p>
+            <div class="flex items-center gap-3" aria-label="Service gallery controls">
+              <span class="font-mono text-[10px] uppercase tracking-[0.18em] text-champagne/60">Scroll to explore</span>
+              <button type="button" onclick="scrollServiceGallery(-1)" aria-label="Scroll to previous services" class="w-10 h-10 rounded-full border border-white/15 text-gold hover:border-gold hover:bg-gold/10 transition-colors">
+                <svg class="w-4 h-4 mx-auto" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 18l-6-6 6-6" />
+                </svg>
+              </button>
+              <button type="button" onclick="scrollServiceGallery(1)" aria-label="Scroll to next services" class="w-10 h-10 rounded-full border border-white/15 text-gold hover:border-gold hover:bg-gold/10 transition-colors">
+                <svg class="w-4 h-4 mx-auto" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 18l6-6-6-6" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div id="service-gallery" class="service-gallery" aria-label="GDStudio services" tabindex="0">
+          <article class="service-card tilt-wrapper rounded-3xl overflow-hidden border border-white/10 bg-surface shadow-xl">
+            <div class="service-card-image relative aspect-[4/3] overflow-hidden bg-charcoal">
+              <img src="graduation%20image.jpeg" alt="Graduate celebrating outdoors in cap and gown" loading="lazy" decoding="async" class="w-full h-full object-cover transition-transform duration-700 hover:scale-105" />
+              <div class="absolute inset-0 bg-gradient-to-t from-obsidian via-obsidian/10 to-transparent"></div>
+              <span class="absolute top-4 left-4 rounded-full bg-obsidian/80 border border-gold/40 px-3 py-1.5 font-mono text-[10px] tracking-widest text-gold">01 / PORTRAITS</span>
+              <h3 class="absolute bottom-4 left-5 right-5 font-serif text-2xl text-ivory font-semibold">Graduation And Academic Portraits</h3>
+            </div>
+            <div class="p-5">
+              <p class="min-h-12 text-sm text-champagne/75 leading-relaxed">Celebrate your milestone with guided, beautifully finished studio or outdoor portraits.</p>
+              <button type="button" onclick="showServiceDetails(0)" class="mt-4 inline-flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-gold hover:text-gold-light transition-colors">View service details <span aria-hidden="true">&rarr;</span></button>
+            </div>
+          </article>
+
+          <article class="service-card tilt-wrapper rounded-3xl overflow-hidden border border-white/10 bg-surface shadow-xl">
+            <div class="service-card-image relative aspect-[4/3] overflow-hidden bg-charcoal">
+              <img src="Corporate%20And%20Individual%20Branding%20Portraits.jpeg" alt="Professional portrait session for individual branding" loading="lazy" decoding="async" class="w-full h-full object-cover transition-transform duration-700 hover:scale-105" />
+              <div class="absolute inset-0 bg-gradient-to-t from-obsidian via-obsidian/10 to-transparent"></div>
+              <span class="absolute top-4 left-4 rounded-full bg-obsidian/80 border border-gold/40 px-3 py-1.5 font-mono text-[10px] tracking-widest text-gold">02 / BRANDING</span>
+              <h3 class="absolute bottom-4 left-5 right-5 font-serif text-2xl text-ivory font-semibold">Corporate And Individual Branding Portraits</h3>
+            </div>
+            <div class="p-5">
+              <p class="min-h-12 text-sm text-champagne/75 leading-relaxed">Confident, considered portraits for professional profiles and personal brands.</p>
+              <button type="button" onclick="showServiceDetails(1)" class="mt-4 inline-flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-gold hover:text-gold-light transition-colors">View service details <span aria-hidden="true">&rarr;</span></button>
+            </div>
+          </article>
+
+          <article class="service-card tilt-wrapper rounded-3xl overflow-hidden border border-white/10 bg-surface shadow-xl">
+            <div class="service-card-image relative aspect-[4/3] overflow-hidden bg-charcoal">
+              <img src="Couples,%20Maternity%20And%20Family%20Sessions.jpeg" alt="Family together on the beach during a maternity portrait session" loading="lazy" decoding="async" class="w-full h-full object-cover transition-transform duration-700 hover:scale-105" />
+              <div class="absolute inset-0 bg-gradient-to-t from-obsidian via-obsidian/10 to-transparent"></div>
+              <span class="absolute top-4 left-4 rounded-full bg-obsidian/80 border border-gold/40 px-3 py-1.5 font-mono text-[10px] tracking-widest text-gold">03 / FAMILY</span>
+              <h3 class="absolute bottom-4 left-5 right-5 font-serif text-2xl text-ivory font-semibold">Couples, Maternity And Family Sessions</h3>
+            </div>
+            <div class="p-5">
+              <p class="min-h-12 text-sm text-champagne/75 leading-relaxed">Keep the warmth of your growing family and milestones in photographs to treasure.</p>
+              <button type="button" onclick="showServiceDetails(2)" class="mt-4 inline-flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-gold hover:text-gold-light transition-colors">View service details <span aria-hidden="true">&rarr;</span></button>
+            </div>
+          </article>
+
+          <article class="service-card tilt-wrapper rounded-3xl overflow-hidden border border-white/10 bg-surface shadow-xl">
+            <div class="service-card-image relative aspect-[4/3] overflow-hidden bg-charcoal">
+              <img src="Commercial%20Product%20And%20Real%20Estate%20Visuals.jpeg" alt="Studio lighting and camera setup for commercial product photography" loading="lazy" decoding="async" class="w-full h-full object-cover transition-transform duration-700 hover:scale-105" />
+              <div class="absolute inset-0 bg-gradient-to-t from-obsidian via-obsidian/10 to-transparent"></div>
+              <span class="absolute top-4 left-4 rounded-full bg-obsidian/80 border border-gold/40 px-3 py-1.5 font-mono text-[10px] tracking-widest text-gold">04 / COMMERCIAL</span>
+              <h3 class="absolute bottom-4 left-5 right-5 font-serif text-2xl text-ivory font-semibold">Commercial Product And Real Estate Visuals</h3>
+            </div>
+            <div class="p-5">
+              <p class="min-h-12 text-sm text-champagne/75 leading-relaxed">Showcase products, properties, and spaces with clear, polished imagery.</p>
+              <button type="button" onclick="showServiceDetails(3)" class="mt-4 inline-flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-gold hover:text-gold-light transition-colors">View service details <span aria-hidden="true">&rarr;</span></button>
+            </div>
+          </article>
+
+          <article class="service-card tilt-wrapper rounded-3xl overflow-hidden border border-white/10 bg-surface shadow-xl">
+            <div class="service-card-image relative aspect-[4/3] overflow-hidden bg-charcoal">
+              <img src="Micro%20Event%20And%20Live%20Stage%20Coverage.jpeg" alt="Musicians performing under colorful stage lights" loading="lazy" decoding="async" class="w-full h-full object-cover transition-transform duration-700 hover:scale-105" />
+              <div class="absolute inset-0 bg-gradient-to-t from-obsidian via-obsidian/10 to-transparent"></div>
+              <span class="absolute top-4 left-4 rounded-full bg-obsidian/80 border border-gold/40 px-3 py-1.5 font-mono text-[10px] tracking-widest text-gold">05 / LIVE EVENTS</span>
+              <h3 class="absolute bottom-4 left-5 right-5 font-serif text-2xl text-ivory font-semibold">Micro Event And Live Stage Coverage</h3>
+            </div>
+            <div class="p-5">
+              <p class="min-h-12 text-sm text-champagne/75 leading-relaxed">Relive the atmosphere, people, and unscripted moments of your event.</p>
+              <button type="button" onclick="showServiceDetails(4)" class="mt-4 inline-flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-gold hover:text-gold-light transition-colors">View service details <span aria-hidden="true">&rarr;</span></button>
+            </div>
+          </article>
+
+          <article class="service-card tilt-wrapper rounded-3xl overflow-hidden border border-white/10 bg-surface shadow-xl">
+            <div class="service-card-image relative aspect-[4/3] overflow-hidden bg-charcoal">
+              <img src="Graphic%20Design%20And%20Visual%20Creatives.jpeg" alt="Colorful graphic design and creative artwork" loading="lazy" decoding="async" class="w-full h-full object-cover transition-transform duration-700 hover:scale-105" />
+              <div class="absolute inset-0 bg-gradient-to-t from-obsidian via-obsidian/10 to-transparent"></div>
+              <span class="absolute top-4 left-4 rounded-full bg-obsidian/80 border border-gold/40 px-3 py-1.5 font-mono text-[10px] tracking-widest text-gold">06 / DESIGN</span>
+              <h3 class="absolute bottom-4 left-5 right-5 font-serif text-2xl text-ivory font-semibold">Graphic Design And Visual Creatives</h3>
+            </div>
+            <div class="p-5">
+              <p class="min-h-12 text-sm text-champagne/75 leading-relaxed">Make your message stand out with custom graphics for brands, events, and social media.</p>
+              <button type="button" onclick="showServiceDetails(5)" class="mt-4 inline-flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-gold hover:text-gold-light transition-colors">View service details <span aria-hidden="true">&rarr;</span></button>
+            </div>
+          </article>
         </div>
 
         <!-- Interactive Accordion Service Rows (01 - 06) -->
@@ -1583,6 +1735,66 @@
       }
     }
 
+    function scrollServiceGallery(direction) {
+      const gallery = document.getElementById('service-gallery');
+      const firstCard = gallery?.querySelector('.service-card');
+      if (!gallery || !firstCard) return;
+
+      const gap = parseFloat(window.getComputedStyle(gallery).columnGap) || 0;
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      gallery.scrollBy({
+        left: direction * (firstCard.getBoundingClientRect().width + gap),
+        behavior: reducedMotion ? 'auto' : 'smooth'
+      });
+    }
+
+    function showServiceDetails(index) {
+      const row = document.querySelectorAll('.service-row')[index];
+      if (!row) return;
+
+      if (!row.classList.contains('is-open')) toggleServiceRow(row);
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      row.scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth', block: 'center' });
+    }
+
+    function initServiceGallery() {
+      const gallery = document.getElementById('service-gallery');
+      if (!gallery) return;
+
+      const cards = gallery.querySelectorAll('.service-card');
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+      if (reducedMotion.matches) return;
+
+      let frameRequested = false;
+      const updateCardDepth = () => {
+        const galleryRect = gallery.getBoundingClientRect();
+        const center = galleryRect.left + galleryRect.width / 2;
+        const maxDistance = galleryRect.width * 0.68;
+
+        cards.forEach((card) => {
+          const cardRect = card.getBoundingClientRect();
+          const distance = (cardRect.left + cardRect.width / 2) - center;
+          const position = Math.max(-1, Math.min(1, distance / maxDistance));
+          const edgeDistance = Math.abs(position);
+          card.style.setProperty('--service-rotation', `${(-position * 10).toFixed(2)}deg`);
+          card.style.setProperty('--service-depth', `${(22 - edgeDistance * 30).toFixed(1)}px`);
+          card.style.setProperty('--service-scale', (1 - edgeDistance * 0.045).toFixed(3));
+        });
+
+        frameRequested = false;
+      };
+
+      const scheduleUpdate = () => {
+        if (frameRequested) return;
+        frameRequested = true;
+        window.requestAnimationFrame(updateCardDepth);
+      };
+
+      gallery.addEventListener('scroll', scheduleUpdate, { passive: true });
+      window.addEventListener('resize', scheduleUpdate);
+      scheduleUpdate();
+    }
+
     function init3DTiltCards() {
       const tiltCards = document.querySelectorAll('.tilt-card');
 
@@ -1827,6 +2039,7 @@
     window.addEventListener('DOMContentLoaded', () => {
       document.getElementById('current-year').textContent = new Date().getFullYear();
       init3DTiltCards();
+      initServiceGallery();
       initMagneticButtons();
       initPortfolioFilters();
       initBookingSystem();
